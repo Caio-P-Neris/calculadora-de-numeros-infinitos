@@ -2,22 +2,29 @@
 #include "bignumber.h"
 #include <string.h>
 #include <stdlib.h>
+#define MAX 1000000
 
 int main(){
 
-    char numerao[200];
-    int tamanho;
+    BigNumber a, b;
+    char numerao_a[MAX], numerao_b[MAX];
 
-    printf("DIgite o numerao: \n");
-    // scanf("%c", &numerao);
-    fgets(numerao, 200, stdin);
+    printf("DIgite o numerao a: \n");
 
-    tamanho = strlen(numerao);
-    
-    // printf("Seu numerao e %s", numerao);
+    fgets(numerao_a, MAX, stdin);
 
-    BigNumber x = le_numerao(numerao, tamanho);
-    imprime_numerao(x, tamanho);
+    printf("DIgite o numerao b: \n");
+    fgets(numerao_b, MAX, stdin);
+
+
+    a.tamanho = strlen(numerao_a);
+    b.tamanho = strlen(numerao_b);
+
+    a = le_numerao(numerao_a, a);
+    imprime_numerao(a);
+
+    b = le_numerao(numerao_b, b);
+    imprime_numerao(b);
 
     return 0;
 }
