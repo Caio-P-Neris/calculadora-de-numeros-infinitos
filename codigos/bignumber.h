@@ -12,4 +12,6 @@ BigNumber le_numerao( BigNumber x);
 
 void imprime_numerao(BigNumber num);
 
+BigNumber soma(BigNumber a, BigNumber b);
+
 #endif
