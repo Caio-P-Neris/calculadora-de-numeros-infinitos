@@ -6,21 +6,27 @@
 
 int main(){
 
-    BigNumber a = le_numerao(a);
+    //BigNumber a = le_numerao(a);
+
+    // imprime_numerao(a);
+
+    BigNumber a = le_converte(a);
+    
+    //BigNumber a_conv = converte(a);
 
     imprime_numerao(a);
 
-    BigNumber b = le_numerao(b);
+    // BigNumber b = le_numerao(b);
 
-    imprime_numerao(b);
+    // imprime_numerao(b);
 
-    char operador = getchar();
+    // char operador = getchar();
 
-    switch (operador)
-    {
-    case '+' :
-        imprime_numerao(soma(a,b));
-        break;
+    // switch (operador)
+    // {
+    // case '+' :
+    //     imprime_numerao(soma(a,b));
+    //     break;
 
     // case '-':
     //     subtracao(a,b);
@@ -32,7 +38,9 @@ int main(){
     
     // default:
     //     break;
-    }
+    
+    
+    //}
 
     
 
