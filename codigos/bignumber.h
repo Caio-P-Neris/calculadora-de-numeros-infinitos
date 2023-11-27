@@ -19,4 +19,6 @@ BigNumber le_converte(BigNumber x);
 
 BigNumber soma(BigNumber a, BigNumber b);
 
+void imprime_certo(BigNumber num);
+
 #endif

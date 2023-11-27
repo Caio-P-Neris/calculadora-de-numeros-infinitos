@@ -14,7 +14,7 @@ int main(){
     
     //BigNumber a_conv = converte(a);
 
-    imprime_numerao(a);
+    imprime_certo(a);
 
     // BigNumber b = le_numerao(b);
 

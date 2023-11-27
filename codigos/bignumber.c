@@ -52,9 +52,11 @@ BigNumber le_converte(BigNumber x){
 
     tamanho = strlen(numerao);
 
-   // printf(" taman %d \n", tamanho);
+   printf(" tamanho %d \n", tamanho);
 
-    x.tamanho = ceil((tamanho-1)/9) ; //-2 para tirar \n e \0
+    x.tamanho = ceil((tamanho-1)/9) +1 ; //-2 para tirar \n e \0
+
+    printf("n digitos alocado %d \n ", x.tamanho);
 
     // arrumar tamanho em relação a sinal
 
@@ -71,13 +73,14 @@ BigNumber le_converte(BigNumber x){
     for (int i = tamanho - 2; i >= 0 || numerao[i] == '-'; i--) {
 
 
-        x.digitos[j] +=  (numerao[i] - 48) * (ceil(pow(10, (tamanho - 2 - i) % 9)));
+        x.digitos[j] +=  (numerao[i] - 48)  * (ceil(pow(10, (tamanho - 2 - i) % 9)));
 
-        printf("%c\n", numerao[i]);
-        printf("%d\n", x.digitos[j]);
+        //printf("%c\n", numerao[i]);
+
 
         // Se alcançou 9 dígitos ou chegou ao final da string
         if ((tamanho - 2 - i) % 9 == 8 || i == 0) {
+            printf("%d\n", x.digitos[j]);
             j++;
         }
 
@@ -111,6 +114,22 @@ BigNumber le_converte(BigNumber x){
 
     return x;
 
+}
+
+
+void imprime_certo(BigNumber num) {
+    printf("impressao:\n");
+
+    // Imprime o caractere de sinal, se existir
+    if (num.sinal == '-') {
+        printf("-");
+    }
+
+    for (int i = num.tamanho - 1; i >= 0; i--) {
+        printf("%d", num.digitos[i]); // Imprime cada bloco de 9 dígitos com zeros à esquerda
+    }
+
+    printf("\n");
 }
 
 void imprime_numerao(BigNumber num){
