@@ -52,7 +52,7 @@ BigNumber le_converte(BigNumber x){
 
     tamanho = strlen(numerao);
 
-   printf(" tamanho %d \n", tamanho);
+    printf(" tamanho %d \n", tamanho);
 
     x.tamanho = ceil((tamanho-1)/9) +1 ; //-2 para tirar \n e \0
 
@@ -70,12 +70,12 @@ BigNumber le_converte(BigNumber x){
 
     int j = 0; // controla índice dos dígitos
 
-    for (int i = tamanho - 2; i >= 0 || numerao[i] == '-'; i--) {
+    for (int i = tamanho - 2; i >= 0 && numerao[i] != '-'; i--) {
 
 
         x.digitos[j] +=  (numerao[i] - 48)  * (ceil(pow(10, (tamanho - 2 - i) % 9)));
 
-        //printf("%c\n", numerao[i]);
+        printf("%c\n", numerao[i]);
 
 
         // Se alcançou 9 dígitos ou chegou ao final da string
@@ -85,6 +85,10 @@ BigNumber le_converte(BigNumber x){
         }
 
     }
+
+    // while ( x.digitos[x.tamanho -1] == 0){ //serve para retirar digitos que só tem zeros
+    //     x.tamanho--;
+    // }
     // int w = 0; // controla indice dos digitos
 
     // for(int i = tamanho -2  ; i >= 0 || numerao[i] == '-'; i = i - 9){ 
@@ -118,6 +122,8 @@ BigNumber le_converte(BigNumber x){
 
 
 void imprime_certo(BigNumber num) {
+
+
     printf("impressao:\n");
 
     // Imprime o caractere de sinal, se existir
@@ -125,8 +131,10 @@ void imprime_certo(BigNumber num) {
         printf("-");
     }
 
-    for (int i = num.tamanho - 1; i >= 0; i--) {
-        printf("%d", num.digitos[i]); // Imprime cada bloco de 9 dígitos com zeros à esquerda
+    printf("%d", num.digitos[num.tamanho-1]);  
+
+    for (int i = num.tamanho - 2; i >= 0; i--) {
+        printf("%09d", num.digitos[i]); // Imprime cada bloco de 9 dígitos com zeros à esquerda
     }
 
     printf("\n");
@@ -175,6 +183,57 @@ void imprime_numerao(BigNumber num){
 //     return y;
 // }
 
+BigNumber somac(BigNumber *maior, BigNumber *menor){
+    int i;
+    int carry = 0;
+    
+
+    for( i =0; i < menor->tamanho ; i++){
+        
+        maior->digitos[i] += (menor->digitos[i] + carry);
+        carry = maior->digitos[i] / 1000000000;
+
+        maior->digitos[i] = maior->digitos[i] % 1000000000;
+    }
+
+    if(carry == 1)
+        maior->digitos[i] += 1;
+
+    while ( maior->digitos[maior->tamanho -1] == 0){ //serve para retirar digitos que só tem zeros
+        maior->tamanho--;
+    }
+
+    return *maior;
+}
+
+BigNumber subtracao(BigNumber *maior, BigNumber *menor, int sinal){
+    int i; 
+    int carry = 0;
+
+    for( i =0; i < menor->tamanho ; i++){
+
+        if(maior->digitos[i] > menor->digitos[i]){
+            maior->digitos[i] -= menor->digitos[i] + carry;
+            carry = 0;
+        }else{
+            int numero = maior->digitos[i];
+
+            int dig_vetor = sizeof(maior->digitos[i] / sizeof(int));
+
+            printf(" %d numero de digitos no vetor %d\n ", dig_vetor, i);
+            
+            maior->digitos[i] = maior->digitos[i] *(int)ceil(pow(10, dig_vetor)) - menor->digitos[i];
+             
+            carry = -1;
+        } 
+
+    }
+
+    if(sinal == 1)
+        maior->sinal = '-';
+    
+    return *maior;
+}
 
 
 BigNumber soma(BigNumber a, BigNumber b){

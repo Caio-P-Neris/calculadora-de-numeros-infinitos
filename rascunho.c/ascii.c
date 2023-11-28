@@ -15,6 +15,8 @@ int main(){
 
     printf("%c em ascii e %d\n", d, d);
 
-
+    char f ='-';
+    printf("- em acii %d\n", f);
     return 0;
+
 }

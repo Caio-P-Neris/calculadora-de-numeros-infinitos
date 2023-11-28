@@ -19,6 +19,10 @@ BigNumber le_converte(BigNumber x);
 
 BigNumber soma(BigNumber a, BigNumber b);
 
+BigNumber somac(BigNumber *maior, BigNumber *menor);
+
+BigNumber subtracao(BigNumber *maior, BigNumber *menor, int sinal);
+
 void imprime_certo(BigNumber num);
 
 #endif
