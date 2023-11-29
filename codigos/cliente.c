@@ -43,6 +43,8 @@ int main(){
         //printf("entrou \n");
     }else if ((operador == '-') && ((a.sinal == b.sinal))){
         //a.sinal = '-'; 
+
+        printf("entrou aqui? \n");
         if (b.sinal == '+')
             b.sinal = '-';
         else
@@ -65,10 +67,14 @@ int main(){
         break;
 
     case '-':
-    if((a.tamanho > b.tamanho || (a.tamanho == b.tamanho && a.digitos[a.tamanho -1] > b.digitos[b.tamanho -1]))){ // verifica a > b
-        imprime_certo(subtracao(&a,&b, 0));
+
+    printf("dig a : %d \n ", a.digitos[a.tamanho -1]);
+    printf("dig b : %d \n ", b.digitos[b.tamanho -1]);
+
+    if(a.tamanho > b.tamanho || (a.tamanho == b.tamanho && (a.digitos[a.tamanho -1] > b.digitos[b.tamanho -1]))){ // verifica a > b
+        imprime_certo(subtracao(&a,&b, a.sinal));
     } else {
-        imprime_certo(subtracao(&b,&a, 1));
+        imprime_certo(subtracao(&b,&a, b.sinal));
     }
         break;
 

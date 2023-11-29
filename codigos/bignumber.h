@@ -21,7 +21,7 @@ BigNumber soma(BigNumber a, BigNumber b);
 
 BigNumber somac(BigNumber *maior, BigNumber *menor);
 
-BigNumber subtracao(BigNumber *maior, BigNumber *menor, int sinal);
+BigNumber subtracao(BigNumber *maior, BigNumber *menor, char sinal);
 
 void imprime_certo(BigNumber num);
 

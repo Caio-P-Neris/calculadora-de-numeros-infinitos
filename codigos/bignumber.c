@@ -206,9 +206,11 @@ BigNumber somac(BigNumber *maior, BigNumber *menor){
     return *maior;
 }
 
-BigNumber subtracao(BigNumber *maior, BigNumber *menor, int sinal){
+BigNumber subtracao(BigNumber *maior, BigNumber *menor, char sinal){
     int i; 
     int carry = 0;
+
+    printf("Sinal na sub %d", sinal);
 
     for( i =0; i < menor->tamanho ; i++){
 
@@ -229,8 +231,10 @@ BigNumber subtracao(BigNumber *maior, BigNumber *menor, int sinal){
 
     }
 
-    if(sinal == 1)
+    if(sinal == '-')
         maior->sinal = '-';
+    else
+        maior->sinal = '+';
     
     return *maior;
 }
