@@ -14,13 +14,13 @@ int main(){
     
     //BigNumber a_conv = converte(a);
 
-    imprime_certo(a);
+    //imprime_certo(a);
 
     //getchar();
 
     BigNumber b = le_converte(b);
 
-    imprime_certo(b);
+    //imprime_certo(b);
 
     char operador = getchar();
 
@@ -33,18 +33,19 @@ int main(){
         operador = '-';
         //printf("Esse entra \n");
 
-    // CUIDADO COM SINAL NA MULTIPLICAÇÃO!!
-
-
-    }else if ((operador == '-') && ((a.sinal == '+' && b.sinal =='-') || (a.sinal == '-' && b.sinal == '+'))){
+    }else if ((operador == '-') && (a.sinal == '+' && b.sinal =='-')){ //|| (a.sinal == '-' && b.sinal == '+'))){
         operador = '+';
-        a.sinal = '-'; 
-        b.sinal = '-';
+        //a.sinal = '+'; 
+        b.sinal = '+';
         //printf("entrou \n");
+    }else if((operador == '-') &&(a.sinal == '-' && b.sinal == '+')){
+        operador = '+';
+        b.sinal ='-';
+    
     }else if ((operador == '-') && ((a.sinal == b.sinal))){
         //a.sinal = '-'; 
 
-        printf("entrou aqui? \n");
+        //printf("entrou aqui? \n");
         if (b.sinal == '+')
             b.sinal = '-';
         else
@@ -88,19 +89,19 @@ int main(){
     // else 
     //     resultado.tamanho = 2*b.tamanho;
 
-    resultado.tamanho = a.tamanho + b.tamanho; 
+    //resultado.tamanho = a.tamanho + b.tamanho; 
 
-    resultado.digitos = (long long int*)calloc(resultado.tamanho, sizeof(long long int));
+    //resultado.digitos = (long long int*)calloc(resultado.tamanho, sizeof(long long int));
 
-    if (a.sinal == a.sinal)
+    //if (a.sinal == a.sinal)
         resultado.sinal = '+';
-    else
-        resultado.sinal = '-';
+    //else
+        //resultado.sinal = '-';
 
     // if(a.tamanho > b.tamanho || (a.tamanho == b.tamanho && (a.digitos[a.tamanho -1] > b.digitos[b.tamanho -1])))
     //     (multiplicacao_karatsuba(&a,&b, &resultado));
     // else
-    (multiplicacao_karatsuba(&a,&b, &resultado));
+    //(multiplicacao_karatsuba(&a,&b, &resultado));
     
     // resultado = multiplicacao_karatsuba(&a, &b);
 
@@ -109,10 +110,12 @@ int main(){
     // else
     //     resultado.sinal = '-';
     
-    imprime_certo(resultado);
+    //imprime_certo(resultado);
 
 
     //free(resultado.digitos);
+
+    imprime_certo(muliplica_normal(&a, &b));
         break;
     
     default:

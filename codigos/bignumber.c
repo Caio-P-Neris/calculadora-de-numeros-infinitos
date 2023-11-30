@@ -46,17 +46,17 @@ BigNumber le_converte(BigNumber x){
     char *numerao = NULL;
     size_t tamanho = 0;
 
-    printf("Digite o numero grande \n");
+    //printf("Digite o numero grande \n");
 
     getline(&numerao, &tamanho, stdin);
 
     tamanho = strlen(numerao);
 
-    printf(" tamanho %d \n", tamanho);
+    //printf(" tamanho %d \n", tamanho);
 
     x.tamanho = ceil((tamanho-1)/9) +1 ; //-2 para tirar \n e \0
 
-    printf("n digitos alocado %d \n ", x.tamanho);
+    //printf("n digitos alocado %d \n ", x.tamanho);
 
     // arrumar tamanho em relação a sinal
 
@@ -75,12 +75,12 @@ BigNumber le_converte(BigNumber x){
 
         x.digitos[j] +=  (numerao[i] - 48)  * (ceil(pow(10, (tamanho - 2 - i) % 9)));
 
-        printf("%c\n", numerao[i]);
+        //printf("%c\n", numerao[i]);
 
 
         // Se alcançou 9 dígitos ou chegou ao final da string
         if ((tamanho - 2 - i) % 9 == 8 || i == 0) {
-            printf("%lld\n", x.digitos[j]);
+            //printf("%lld\n", x.digitos[j]);
             j++;
         }
 
@@ -124,7 +124,7 @@ BigNumber le_converte(BigNumber x){
 void imprime_certo(BigNumber num) {
 
 
-    printf("impressao:\n");
+    //printf("impressao:\n");
 
     if (num.sinal == '-') {
         printf("-");
@@ -209,7 +209,7 @@ BigNumber subtracao(BigNumber *maior, BigNumber *menor, char sinal){
     int i; 
     int carry = 0;
 
-    printf("Sinal na sub %d", sinal);
+    //printf("Sinal na sub %d", sinal);
 
     for( i =0; i < menor->tamanho ; i++){
 
@@ -238,83 +238,112 @@ BigNumber subtracao(BigNumber *maior, BigNumber *menor, char sinal){
     return *maior;
 }
 
+BigNumber muliplica_normal(BigNumber* a, BigNumber *b){
+    BigNumber resultado;
+    
+    resultado.tamanho = a->tamanho + b->tamanho; 
 
-void multiplicacao_karatsuba(const BigNumber* a, const BigNumber* b, BigNumber* resultado) {
-    if (a->tamanho == 1 && b->tamanho == 1) {
-        // Caso base: multiplicação de dígitos únicos
-        int produto = a->digitos[0] * b->digitos[0];
+    resultado.digitos = (long long int*)calloc(resultado.tamanho, sizeof(long long int));
 
-        resultado->digitos[0] = produto % BASE;
-        if( produto % BASE != 0)
-            resultado->digitos[1] = produto / BASE;
+    if (a->sinal == b->sinal)
+        resultado.sinal = '+';
+    else
+        resultado.sinal = '-';
 
-        return;
+
+    for(int i = 0; i < a->tamanho; i++){
+        int carry = 0;
+        for (int j = 0; j < b->tamanho; j++){
+            long long int temp = a->digitos[i] * b->digitos[j] + resultado.digitos[i + j] + carry;
+            carry = temp / BASE;
+            resultado.digitos[i + j] = temp % BASE;
+        }
+        resultado.digitos[i + b->tamanho] += carry;
     }
 
-    // Divisão dos números em duas partes
-    int meio = (a->tamanho > b->tamanho) ? floor(b->tamanho / 2) : floor(a->tamanho / 2) ;
-
-    BigNumber a1, a2, b1, b2;
-    a1.tamanho = meio;
-    a1.digitos = a->digitos;
-    a1.sinal = a->sinal;
-
-    a2.tamanho = a->tamanho - meio;
-    a2.digitos = a->digitos + meio;
-    a2.sinal = a->sinal;
-
-    b1.tamanho = meio;
-    b1.digitos = b->digitos;
-    b1.sinal = b->sinal;
-
-    b2.tamanho = b->tamanho - meio;
-    b2.digitos = b->digitos + meio;
-    b2.sinal = b->sinal;
-
-    // Recursivamente calcula três produtos
-    BigNumber z0, z1, z2;
-    z0.tamanho = a->tamanho + b->tamanho - 1;
-    z0.digitos = (long long int*)calloc(z0.tamanho, sizeof(long long int));
-    z1.tamanho = a->tamanho + b->tamanho - 1;
-    z1.digitos = (long long int*)calloc(z1.tamanho, sizeof(long long int));
-    z2.tamanho = a->tamanho + b->tamanho - 1;
-    z2.digitos = (long long int*)calloc(z2.tamanho, sizeof(long long int));
-
-    multiplicacao_karatsuba(&a1, &b1, &z0);
-    BigNumber a_plus_a2, b_plus_b2;
-    somac(&a1, &a2, &a_plus_a2);
-    somac(&b1, &b2, &b_plus_b2);
-    multiplicacao_karatsuba(&a_plus_a2, &b_plus_b2, &z1);
-    multiplicacao_karatsuba(&a2, &b2, &z2);
-
-    // Combina os produtos para obter o resultado final
-    for (int i = 0; i < z0.tamanho; i++) {
-        resultado->digitos[i] += z0.digitos[i];
+    while ( resultado.digitos[resultado.tamanho -1] == 0){ //serve para retirar digitos que só tem zeros
+        resultado.tamanho--;
     }
 
-    for (int i = 0; i < z1.tamanho; i++) {
-        resultado->digitos[i + meio] += z1.digitos[i];
-    }
-
-    for (int i = 0; i < z2.tamanho; i++) {
-        resultado->digitos[i + 2 * meio] += z2.digitos[i];
-    }
-
-    // Trata os casos de carry
-    int j = 0;
-    while (j < resultado->tamanho - 1 && resultado->digitos[j] >= BASE) {
-        resultado->digitos[j + 1] += resultado->digitos[j] / BASE;
-        resultado->digitos[j] %= BASE;
-        j++;
-    }
-
-    resultado->sinal = (a->sinal == b->sinal) ? '+' : '-';
-
-    // Libera memória utilizada pelos produtos intermediários
-    free(z0.digitos);
-    free(z1.digitos);
-    free(z2.digitos);
+        return resultado;
 }
+
+// void multiplicacao_karatsuba(const BigNumber* a, const BigNumber* b, BigNumber* resultado) {
+//     if (a->tamanho == 1 && b->tamanho == 1) {
+//         // Caso base: multiplicação de dígitos únicos
+//         int produto = a->digitos[0] * b->digitos[0];
+
+//         resultado->digitos[0] = produto % BASE;
+//         if( produto % BASE != 0)
+//             resultado->digitos[1] = produto / BASE;
+
+//         return;
+//     }
+
+//     // Divisão dos números em duas partes
+//     int meio = (a->tamanho > b->tamanho) ? floor(b->tamanho / 2) : floor(a->tamanho / 2) ;
+
+//     BigNumber a1, a2, b1, b2;
+//     a1.tamanho = meio;
+//     a1.digitos = a->digitos;
+//     a1.sinal = a->sinal;
+
+//     a2.tamanho = a->tamanho - meio;
+//     a2.digitos = a->digitos + meio;
+//     a2.sinal = a->sinal;
+
+//     b1.tamanho = meio;
+//     b1.digitos = b->digitos;
+//     b1.sinal = b->sinal;
+
+//     b2.tamanho = b->tamanho - meio;
+//     b2.digitos = b->digitos + meio;
+//     b2.sinal = b->sinal;
+
+//     // Recursivamente calcula três produtos
+//     BigNumber z0, z1, z2;
+//     z0.tamanho = a->tamanho + b->tamanho - 1;
+//     z0.digitos = (long long int*)calloc(z0.tamanho, sizeof(long long int));
+//     z1.tamanho = a->tamanho + b->tamanho - 1;
+//     z1.digitos = (long long int*)calloc(z1.tamanho, sizeof(long long int));
+//     z2.tamanho = a->tamanho + b->tamanho - 1;
+//     z2.digitos = (long long int*)calloc(z2.tamanho, sizeof(long long int));
+
+//     multiplicacao_karatsuba(&a1, &b1, &z0);
+//     BigNumber a_plus_a2, b_plus_b2;
+//     somac(&a1, &a2, &a_plus_a2);
+//     somac(&b1, &b2, &b_plus_b2);
+//     multiplicacao_karatsuba(&a_plus_a2, &b_plus_b2, &z1);
+//     multiplicacao_karatsuba(&a2, &b2, &z2);
+
+//     // Combina os produtos para obter o resultado final
+//     for (int i = 0; i < z0.tamanho; i++) {
+//         resultado->digitos[i] += z0.digitos[i];
+//     }
+
+//     for (int i = 0; i < z1.tamanho; i++) {
+//         resultado->digitos[i + meio] += z1.digitos[i];
+//     }
+
+//     for (int i = 0; i < z2.tamanho; i++) {
+//         resultado->digitos[i + 2 * meio] += z2.digitos[i];
+//     }
+
+//     // Trata os casos de carry
+//     int j = 0;
+//     while (j < resultado->tamanho - 1 && resultado->digitos[j] >= BASE) {
+//         resultado->digitos[j + 1] += resultado->digitos[j] / BASE;
+//         resultado->digitos[j] %= BASE;
+//         j++;
+//     }
+
+//     resultado->sinal = (a->sinal == b->sinal) ? '+' : '-';
+
+//     // Libera memória utilizada pelos produtos intermediários
+//     free(z0.digitos);
+//     free(z1.digitos);
+//     free(z2.digitos);
+// }
 
 
 

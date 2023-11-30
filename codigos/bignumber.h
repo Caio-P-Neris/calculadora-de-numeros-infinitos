@@ -23,7 +23,9 @@ BigNumber somac(BigNumber *maior, BigNumber *menor);
 
 BigNumber subtracao(BigNumber *maior, BigNumber *menor, char sinal  );
 
-void multiplicacao_karatsuba(BigNumber *a, BigNumber *b, BigNumber *resultado);
+BigNumber muliplica_normal(BigNumber* a, BigNumber *b);
+
+//void multiplicacao_karatsuba(BigNumber *a, BigNumber *b, BigNumber *resultado);
 
 void imprime_certo(BigNumber num);
 
