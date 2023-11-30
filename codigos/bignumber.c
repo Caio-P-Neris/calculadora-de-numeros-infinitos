@@ -3,45 +3,45 @@
 #include "bignumber.h"
 #include <stdlib.h>
 #include <string.h>
+#define BASE 1000000000
 
-BigNumber le_numerao( BigNumber x){
+// BigNumber le_numerao( BigNumber x){
 
-    char *numerao = NULL;
-    size_t tamanho = 0;
+//     char *numerao = NULL;
+//     size_t tamanho = 0;
 
-    printf("Digite o numero grande \n");
+//     printf("Digite o numero grande \n");
 
-    getline(&numerao, &tamanho, stdin);
+//     getline(&numerao, &tamanho, stdin);
 
-    tamanho = strlen(numerao);
+//     tamanho = strlen(numerao);
 
-    //printf("%d", tamanho);
+//     //printf("%d", tamanho);
 
-    x.tamanho = tamanho -2 ;// -2 garante pegar so os numeros, sem '\0' ou '\n'
+//     x.tamanho = tamanho -2 ;// -2 garante pegar so os numeros, sem '\0' ou '\n'
 
-    x.digitos = (int*)malloc(x.tamanho * sizeof(int));
+//     x.digitos = (int*)malloc(x.tamanho * sizeof(int));
 
 
-    for(int i = x.tamanho  ; i >= 0; i--){ 
-        int j = (x.tamanho ) -i;
-    //for(int i = 0; i < x.tamanho ; i++){
-        if (numerao[i] == 45 ){
-            x.digitos[j] = (numerao[i]); //cod asci p - é 45
-        } else
-        x.digitos[j] = (numerao[i] - 48) ; //na tab ascii, a diferença é de 48 do cod de char numeral para o int
-        //printf("%d", x.digitos[j]);
+//     for(int i = x.tamanho  ; i >= 0; i--){ 
+//         int j = (x.tamanho ) -i;
+//     //for(int i = 0; i < x.tamanho ; i++){
+//         if (numerao[i] == 45 ){
+//             x.digitos[j] = (numerao[i]); //cod asci p - é 45
+//         } else
+//         x.digitos[j] = (numerao[i] - 48) ; //na tab ascii, a diferença é de 48 do cod de char numeral para o int
+//         //printf("%d", x.digitos[j]);
         
-    //printf("\n");
-    }
+//     //printf("\n");
+//     }
 
-    free(numerao);
+//     free(numerao);
 
-    return x;
+//     return x;
 
-}
+// }
 
 BigNumber le_converte(BigNumber x){
-    #define BASE 1000000000
 
     char *numerao = NULL;
     size_t tamanho = 0;
@@ -60,7 +60,7 @@ BigNumber le_converte(BigNumber x){
 
     // arrumar tamanho em relação a sinal
 
-    x.digitos = (int*)calloc(x.tamanho, sizeof(int));
+    x.digitos = (long long int*)calloc(x.tamanho, sizeof(long long int));
 
     if (numerao[0] == '-')
         x.sinal = '-';
@@ -80,7 +80,7 @@ BigNumber le_converte(BigNumber x){
 
         // Se alcançou 9 dígitos ou chegou ao final da string
         if ((tamanho - 2 - i) % 9 == 8 || i == 0) {
-            printf("%d\n", x.digitos[j]);
+            printf("%lld\n", x.digitos[j]);
             j++;
         }
 
@@ -126,33 +126,32 @@ void imprime_certo(BigNumber num) {
 
     printf("impressao:\n");
 
-    // Imprime o caractere de sinal, se existir
     if (num.sinal == '-') {
         printf("-");
     }
 
-    printf("%d", num.digitos[num.tamanho-1]);  
+    printf("%lld", num.digitos[num.tamanho-1]);  
 
     for (int i = num.tamanho - 2; i >= 0; i--) {
-        printf("%09d", num.digitos[i]); // Imprime cada bloco de 9 dígitos com zeros à esquerda
+        printf("%09lld", num.digitos[i]); // Imprime cada bloco de 9 dígitos com zeros à esquerda
     }
 
     printf("\n");
 }
 
-void imprime_numerao(BigNumber num){
+// void imprime_numerao(BigNumber num){
 
-    printf("impressao: \n");
+//     printf("impressao: \n");
 
-    //for(int i = 0 ; i < num.tamanho - 1 ; i++){
-    for(int i = num.tamanho ; i >= 0; i--){   // problema aqui com lixo de memoria
-        if (num.digitos[i] == 45){ //pra mostrar o sinal
-            printf("%c", num.digitos[i]);
-        } else
-            printf("%d", num.digitos[i]);
-    }
-    printf("\n");
-}
+//     //for(int i = 0 ; i < num.tamanho - 1 ; i++){
+//     for(int i = num.tamanho ; i >= 0; i--){   // problema aqui com lixo de memoria
+//         if (num.digitos[i] == 45){ //pra mostrar o sinal
+//             printf("%c", num.digitos[i]);
+//         } else
+//             printf("%d", num.digitos[i]);
+//     }
+//     printf("\n");
+// }
 
 // BigNumber converte(BigNumber x){
 //     #define BASE 2;
@@ -240,33 +239,113 @@ BigNumber subtracao(BigNumber *maior, BigNumber *menor, char sinal){
 }
 
 
-BigNumber soma(BigNumber a, BigNumber b){
-    BigNumber maior, menor;
-    
-    if( a.tamanho < b.tamanho){
-        menor = a;
-        maior = b;
-    }else{
-        menor = b;
-        maior = a;
+void multiplicacao_karatsuba(const BigNumber* a, const BigNumber* b, BigNumber* resultado) {
+    if (a->tamanho == 1 && b->tamanho == 1) {
+        // Caso base: multiplicação de dígitos únicos
+        int produto = a->digitos[0] * b->digitos[0];
+
+        resultado->digitos[0] = produto % BASE;
+        if( produto % BASE != 0)
+            resultado->digitos[1] = produto / BASE;
+
+        return;
     }
 
-    for(int i = 0; i < menor.tamanho +1 ; i++){
-    //for(int i = menor.tamanho -2; i >= 0; i--){
-        int soma = maior.digitos[i] + menor.digitos[i];
-        
-        printf("iteracao %d soma -> %d \n", i, soma);
+    // Divisão dos números em duas partes
+    int meio = (a->tamanho > b->tamanho) ? floor(b->tamanho / 2) : floor(a->tamanho / 2) ;
 
-        if (soma > 9 && (menor.tamanho) != i) {
-            maior.digitos[i+1] += 1;
-            maior.digitos[i] = soma % 10;
-        //}else if (soma > 9 && (menor.tamanho +1) == i){
+    BigNumber a1, a2, b1, b2;
+    a1.tamanho = meio;
+    a1.digitos = a->digitos;
+    a1.sinal = a->sinal;
+
+    a2.tamanho = a->tamanho - meio;
+    a2.digitos = a->digitos + meio;
+    a2.sinal = a->sinal;
+
+    b1.tamanho = meio;
+    b1.digitos = b->digitos;
+    b1.sinal = b->sinal;
+
+    b2.tamanho = b->tamanho - meio;
+    b2.digitos = b->digitos + meio;
+    b2.sinal = b->sinal;
+
+    // Recursivamente calcula três produtos
+    BigNumber z0, z1, z2;
+    z0.tamanho = a->tamanho + b->tamanho - 1;
+    z0.digitos = (long long int*)calloc(z0.tamanho, sizeof(long long int));
+    z1.tamanho = a->tamanho + b->tamanho - 1;
+    z1.digitos = (long long int*)calloc(z1.tamanho, sizeof(long long int));
+    z2.tamanho = a->tamanho + b->tamanho - 1;
+    z2.digitos = (long long int*)calloc(z2.tamanho, sizeof(long long int));
+
+    multiplicacao_karatsuba(&a1, &b1, &z0);
+    BigNumber a_plus_a2, b_plus_b2;
+    somac(&a1, &a2, &a_plus_a2);
+    somac(&b1, &b2, &b_plus_b2);
+    multiplicacao_karatsuba(&a_plus_a2, &b_plus_b2, &z1);
+    multiplicacao_karatsuba(&a2, &b2, &z2);
+
+    // Combina os produtos para obter o resultado final
+    for (int i = 0; i < z0.tamanho; i++) {
+        resultado->digitos[i] += z0.digitos[i];
+    }
+
+    for (int i = 0; i < z1.tamanho; i++) {
+        resultado->digitos[i + meio] += z1.digitos[i];
+    }
+
+    for (int i = 0; i < z2.tamanho; i++) {
+        resultado->digitos[i + 2 * meio] += z2.digitos[i];
+    }
+
+    // Trata os casos de carry
+    int j = 0;
+    while (j < resultado->tamanho - 1 && resultado->digitos[j] >= BASE) {
+        resultado->digitos[j + 1] += resultado->digitos[j] / BASE;
+        resultado->digitos[j] %= BASE;
+        j++;
+    }
+
+    resultado->sinal = (a->sinal == b->sinal) ? '+' : '-';
+
+    // Libera memória utilizada pelos produtos intermediários
+    free(z0.digitos);
+    free(z1.digitos);
+    free(z2.digitos);
+}
+
+
+
+
+// BigNumber soma(BigNumber a, BigNumber b){
+//     BigNumber maior, menor;
+    
+//     if( a.tamanho < b.tamanho){
+//         menor = a;
+//         maior = b;
+//     }else{
+//         menor = b;
+//         maior = a;
+//     }
+
+//     for(int i = 0; i < menor.tamanho +1 ; i++){
+//     //for(int i = menor.tamanho -2; i >= 0; i--){
+//         int soma = maior.digitos[i] + menor.digitos[i];
+        
+//         printf("iteracao %d soma -> %d \n", i, soma);
+
+//         if (soma > 9 && (menor.tamanho) != i) {
+//             maior.digitos[i+1] += 1;
+//             maior.digitos[i] = soma % 10;
+//         //}else if (soma > 9 && (menor.tamanho +1) == i){
             
 
-        }else
-            maior.digitos[i] += menor.digitos[i];
-    }
+//         }else
+//             maior.digitos[i] += menor.digitos[i];
+//     }
 
 
-    return maior;
-}
+//     return maior;
+// }

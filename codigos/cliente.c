@@ -50,7 +50,7 @@ int main(){
         else
             b.sinal = '+';
 
-        printf("%c \n", b.sinal);
+        //printf("%c \n", b.sinal);
     }
 
 
@@ -68,8 +68,8 @@ int main(){
 
     case '-':
 
-    printf("dig a : %d \n ", a.digitos[a.tamanho -1]);
-    printf("dig b : %d \n ", b.digitos[b.tamanho -1]);
+    // printf("dig a : %d \n ", a.digitos[a.tamanho -1]);
+    // printf("dig b : %d \n ", b.digitos[b.tamanho -1]);
 
     if(a.tamanho > b.tamanho || (a.tamanho == b.tamanho && (a.digitos[a.tamanho -1] > b.digitos[b.tamanho -1]))){ // verifica a > b
         imprime_certo(subtracao(&a,&b, a.sinal));
@@ -78,9 +78,42 @@ int main(){
     }
         break;
 
-    // case '*':
-    //     multiplica(a,b);
-    //     break;
+
+    case '*':
+    
+    BigNumber resultado;
+
+    // if (a.tamanho > b.tamanho)
+    //     resultado.tamanho = 2*a.tamanho;
+    // else 
+    //     resultado.tamanho = 2*b.tamanho;
+
+    resultado.tamanho = a.tamanho + b.tamanho; 
+
+    resultado.digitos = (long long int*)calloc(resultado.tamanho, sizeof(long long int));
+
+    if (a.sinal == a.sinal)
+        resultado.sinal = '+';
+    else
+        resultado.sinal = '-';
+
+    // if(a.tamanho > b.tamanho || (a.tamanho == b.tamanho && (a.digitos[a.tamanho -1] > b.digitos[b.tamanho -1])))
+    //     (multiplicacao_karatsuba(&a,&b, &resultado));
+    // else
+    (multiplicacao_karatsuba(&a,&b, &resultado));
+    
+    // resultado = multiplicacao_karatsuba(&a, &b);
+
+    // if (a.sinal == b.sinal)
+    //     resultado.sinal = '+';
+    // else
+    //     resultado.sinal = '-';
+    
+    imprime_certo(resultado);
+
+
+    //free(resultado.digitos);
+        break;
     
     default:
         break;
