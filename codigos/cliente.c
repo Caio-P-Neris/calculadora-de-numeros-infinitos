@@ -6,6 +6,8 @@
 
 int main(){
 
+    
+    //while(1){
     //BigNumber a = le_numerao(a);
 
     // imprime_numerao(a);
@@ -124,6 +126,6 @@ int main(){
 
     free(a.digitos);
     free(b.digitos);
-
-    return 0;
-}
+    }
+    //return 0;
+//}
