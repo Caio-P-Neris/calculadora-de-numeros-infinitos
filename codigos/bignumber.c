@@ -157,7 +157,10 @@ void imprime_certo(BigNumber num) {
     printf("%lld", num.digitos[num.tamanho-1]);  
 
     for (int i = num.tamanho - 2; i >= 0; i--) {
-        printf("%09lld", num.digitos[i]); // Imprime cada bloco de 9 dígitos com zeros à esquerda
+        if (num.digitos[i] != 0)
+            printf("%09lld", num.digitos[i]); // Imprime cada bloco de 9 dígitos com zeros à esquerda
+        else
+            printf(0);
     }
 
     printf("\n");
