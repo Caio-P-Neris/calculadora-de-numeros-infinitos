@@ -52,11 +52,11 @@ BigNumber le_converte(BigNumber x){
 
     tamanho = strlen(numerao);
 
-    //printf(" tamanho %d \n", tamanho);
+    printf(" tamanho %d \n", tamanho);
 
     x.tamanho = ceil((tamanho-1)/9) +1 ; //-2 para tirar \n e \0
 
-    //printf("n digitos alocado %d \n ", x.tamanho);
+    printf("n digitos alocado %d \n ", x.tamanho);
 
     // arrumar tamanho em relação a sinal
 
@@ -80,7 +80,7 @@ BigNumber le_converte(BigNumber x){
 
         // Se alcançou 9 dígitos ou chegou ao final da string
         if ((tamanho - 2 - i) % 9 == 8 || i == 0) {
-            //printf("%lld\n", x.digitos[j]);
+            printf("%lld\n", x.digitos[j]);
             j++;
         }
 

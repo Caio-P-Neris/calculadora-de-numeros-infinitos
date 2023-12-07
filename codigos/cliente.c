@@ -7,7 +7,7 @@
 int main(){
 
     
-    //while(1){
+    //while(a.tamanho != 0 ){
     //BigNumber a = le_numerao(a);
 
     // imprime_numerao(a);
@@ -61,7 +61,7 @@ int main(){
      {
      case '+' :
         //if (a.sinal == b.sinal){
-            if( a.digitos > b.digitos)
+            if( a.tamanho > b.tamanho )
                 imprime_certo(somac(&a,&b));
             else
                 imprime_certo(somac(&b,&a));
@@ -126,6 +126,6 @@ int main(){
 
     free(a.digitos);
     free(b.digitos);
-    }
-    //return 0;
-//}
+    //}
+    return 0;
+}
