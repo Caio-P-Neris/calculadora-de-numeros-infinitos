@@ -37,27 +37,27 @@ int main(){
 
     //printf("%c \n", operador);
 
-    int comparacao = compara(&a, &b);
+    // int comparacao = compara(&a, &b);
 
-    if(    ((comparacao == 1) && (a.sinal == '+' && b.sinal == '+' && operador =='-' )) // 1 1 -
-        || ((comparacao == 1) && (a.sinal == '+' && b.sinal == '-' && operador =='+' )) // 1 -1 +
-        || ((comparacao == 1) && (a.sinal == '-' && b.sinal == '+' && operador =='+' )) // -1 1 +
-        || ((comparacao == 1) && (a.sinal == '-' && b.sinal == '-' && operador =='-' )) ){ // -1 -1 -
-        printf("0\n");
-        operador = '=';
+    // if(    ((comparacao == 1) && (a.sinal == '+' && b.sinal == '+' && operador =='-' )) // 1 1 -
+    //     || ((comparacao == 1) && (a.sinal == '+' && b.sinal == '-' && operador =='+' )) // 1 -1 +
+    //     || ((comparacao == 1) && (a.sinal == '-' && b.sinal == '+' && operador =='+' )) // -1 1 +
+    //     || ((comparacao == 1) && (a.sinal == '-' && b.sinal == '-' && operador =='-' )) ){ // -1 -1 -
+    //     printf("0\n");
+    //     operador = '=';
 
-    }else if (a.sinal == b.sinal && operador == '+'){
+     if (a.sinal == b.sinal && operador == '+'){
         operador = '+';
     
     }else if( (operador == '+') && ((a.sinal == '+' && b.sinal =='-') || (a.sinal == '-' && b.sinal == '+')) ){
         operador = '-';
-        printf("Esse entra \n");
+        //printf("Esse entra \n");
 
     }else if ((operador == '-') && (a.sinal == '+' && b.sinal =='-')){ //|| (a.sinal == '-' && b.sinal == '+'))){
         operador = '+';
         //a.sinal = '+'; 
         b.sinal = '+';
-        printf("entrou \n");
+        //printf("entrou \n");
     }else if((operador == '-') &&(a.sinal == '-' && b.sinal == '+')){
         operador = '+';
         b.sinal ='-';
@@ -65,7 +65,7 @@ int main(){
     }else if ((operador == '-') && ((a.sinal == b.sinal))){
         //a.sinal = '-'; 
 
-        printf("entrou aqui? \n");
+        //printf("entrou aqui? \n");
         if (b.sinal == '+')
             b.sinal = '-';
         else
@@ -91,6 +91,9 @@ int main(){
 
     // printf("dig a : %d \n ", a.digitos[a.tamanho -1]);
     // printf("dig b : %d \n ", b.digitos[b.tamanho -1]);
+
+    //printf("%d \n", a.digitos[a.tamanho-1]);
+    //printf("%d \n", b.digitos[b.tamanho-1]);
 
     if(a.tamanho > b.tamanho || (a.tamanho == b.tamanho && (a.digitos[a.tamanho -1] > b.digitos[b.tamanho -1]))){ // verifica a > b
         imprime_certo(subtracao(&a,&b, a.sinal));

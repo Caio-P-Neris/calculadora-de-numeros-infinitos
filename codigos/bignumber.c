@@ -143,6 +143,13 @@ void imprime_certo(BigNumber num) {
 
     //printf("impressao:\n");
 
+    if(num.sinal == '-' && num.digitos[0] == 0){
+        //printf("%d \n", num.digitos[0]);
+        num.sinal = '+';
+    }
+
+    
+
     if (num.sinal == '-') {
         printf("-");
     }
@@ -219,19 +226,22 @@ BigNumber somac(BigNumber *maior, BigNumber *menor){
         maior->tamanho--;
     }
 
+
     return *maior;
 }
 
 int compara(BigNumber *a, BigNumber *b){
-    if(a->tamanho != b->tamanho)
+    if(a->tamanho != b->tamanho){
+        //printf("a tam %d b tam %d \n", a->tamanho, b->tamanho);
         return 0;
-    else{
-        for(int i = 0; i < a->tamanho; i++){
+    }else{
+        for(int i = 0; i < a->tamanho ; i++){
+            //printf("digito a %d  digito b %d \n", a->digitos[i], b->digitos[i]);
             if(a->digitos[i] != b->digitos[i])
                 return 0;
         //se ao entrou em nennhum return ate aqui, é igual
-        return 1;
         }
+        return 1;
     }
 
 }
@@ -244,7 +254,7 @@ BigNumber subtracao(BigNumber *maior, BigNumber *menor, char sinal){
 
     for( i =0; i < menor->tamanho ; i++){
 
-        if(maior->digitos[i] > menor->digitos[i]){
+        if(maior->digitos[i] >= menor->digitos[i]){
             maior->digitos[i] -= menor->digitos[i] + carry;
             carry = 0;
         }else{
@@ -258,6 +268,10 @@ BigNumber subtracao(BigNumber *maior, BigNumber *menor, char sinal){
              
             carry = -1;
         } 
+
+    // while ( maior->digitos[maior->tamanho -1] == 0){ //serve para retirar digitos que só tem zeros
+    //     maior->tamanho--;
+    // }
 
     }
 
