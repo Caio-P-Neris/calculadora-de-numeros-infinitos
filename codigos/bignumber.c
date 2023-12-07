@@ -41,6 +41,13 @@
 
 // }
 
+// int controla(int controle){
+//     if (controle == 0)
+//         return 0;
+//     else
+//         return 1;
+// }
+
 BigNumber le_converte(BigNumber x){
 
     char *numerao = NULL;
@@ -48,15 +55,25 @@ BigNumber le_converte(BigNumber x){
 
     //printf("Digite o numero grande \n");
 
-    getline(&numerao, &tamanho, stdin);
+    int controle;
+
+    controle = getline(&numerao, &tamanho, stdin);
+
+    if (controle <= 1){
+        x.digitos = NULL;
+        free(numerao);
+        //printf("entrou ! \n");
+        return x;
+    }
+
 
     tamanho = strlen(numerao);
 
-    printf(" tamanho %d \n", tamanho);
+    //printf(" tamanho %d \n", tamanho);
 
     x.tamanho = ceil((tamanho-1)/9) +1 ; //-2 para tirar \n e \0
 
-    printf("n digitos alocado %d \n ", x.tamanho);
+    //printf("n digitos alocado %d \n ", x.tamanho);
 
     // arrumar tamanho em relação a sinal
 
@@ -80,7 +97,7 @@ BigNumber le_converte(BigNumber x){
 
         // Se alcançou 9 dígitos ou chegou ao final da string
         if ((tamanho - 2 - i) % 9 == 8 || i == 0) {
-            printf("%lld\n", x.digitos[j]);
+            //printf("%lld\n", x.digitos[j]);
             j++;
         }
 
@@ -205,6 +222,20 @@ BigNumber somac(BigNumber *maior, BigNumber *menor){
     return *maior;
 }
 
+int compara(BigNumber *a, BigNumber *b){
+    if(a->tamanho != b->tamanho)
+        return 0;
+    else{
+        for(int i = 0; i < a->tamanho; i++){
+            if(a->digitos[i] != b->digitos[i])
+                return 0;
+        //se ao entrou em nennhum return ate aqui, é igual
+        return 1;
+        }
+    }
+
+}
+
 BigNumber subtracao(BigNumber *maior, BigNumber *menor, char sinal){
     int i; 
     int carry = 0;
@@ -221,7 +252,7 @@ BigNumber subtracao(BigNumber *maior, BigNumber *menor, char sinal){
 
             int dig_vetor = sizeof(maior->digitos[i] / sizeof(int));
 
-            printf(" %d numero de digitos no vetor %d\n ", dig_vetor, i);
+            //printf(" %d numero de digitos no vetor %d\n ", dig_vetor, i);
             
             maior->digitos[i] = maior->digitos[i] *(int)ceil(pow(10, dig_vetor)) - menor->digitos[i];
              
