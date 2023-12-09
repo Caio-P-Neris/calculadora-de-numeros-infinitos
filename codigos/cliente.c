@@ -96,7 +96,28 @@ int main(){
     //printf("%d \n", a.digitos[a.tamanho-1]);
     //printf("%d \n", b.digitos[b.tamanho-1]);
 
-    if(a.tamanho > b.tamanho || (a.tamanho == b.tamanho && (a.digitos[a.tamanho -1] > b.digitos[b.tamanho -1]))){ // verifica a > b
+    int ind_maior_a, ind_maior_b, t_a, t_b;
+
+    if (a.digitos[a.tamanho - 1] == 0) {
+        ind_maior_a = a.tamanho - 2;
+        t_a = a.tamanho - 1;
+    } else {
+        ind_maior_a = a.tamanho - 1;
+        t_a = a.tamanho;
+    }
+
+    if (b.digitos[b.tamanho - 1] == 0) {
+        ind_maior_b = b.tamanho - 2;
+        t_b = b.tamanho - 1;
+    } else {
+        ind_maior_b = b.tamanho - 1;
+        t_b = b.tamanho;
+    }
+
+    // essas confições servem para desconsiderar que os dois numeros podem ficar iguais por causa de zero a esquerda ou o digito extra pro carry
+
+
+    if(t_a > t_b || (t_a == t_b && (a.digitos[ind_maior_a] > b.digitos[ind_maior_b]))){ // verifica a > b
         imprime_certo(subtracao(&a,&b, a.sinal));
     } else {
         imprime_certo(subtracao(&b,&a, b.sinal));

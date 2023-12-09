@@ -104,6 +104,10 @@ BigNumber le_converte(BigNumber x){
 
     }
 
+    // if(x.digitos[x.tamanho -1] == 0) //tirar um zero a esquerda
+    //     x.tamanho--;
+
+
     // while ( x.digitos[x.tamanho -1] == 0){ //serve para retirar digitos que só tem zeros
     //     x.tamanho--;
     // }
@@ -148,20 +152,32 @@ void imprime_certo(BigNumber num) {
         //printf("%d \n", num.digitos[0]);
         num.sinal = '+';
     }
-
     
 
     if (num.sinal == '-') {
         printf("-");
     }
 
+    int contazero = 0;
+
+    for (int i = num.tamanho - 1; i >= 0; i--) {
+        if (num.digitos[i] == 0)
+            contazero += 1;
+    }
+
+    if (contazero == num.tamanho) {
+        printf("%d\n", 0);
+        return;
+    }
+
+
     printf("%lld", num.digitos[num.tamanho-1]);  
 
     for (int i = num.tamanho - 2; i >= 0; i--) {
-        if (num.digitos[i] != 0)
+        //if (num.digitos[i] != 0)
             printf("%09lld", num.digitos[i]); // Imprime cada bloco de 9 dígitos com zeros à esquerda
-        else
-            printf("%d\n", 0);
+        //else
+            //printf("%d\n", 0);
     }
 
     printf("\n");
@@ -256,28 +272,37 @@ BigNumber subtracao(BigNumber *maior, BigNumber *menor, char sinal){
 
     //printf("Sinal na sub %d", sinal);
 
-    for( i =0; i < menor->tamanho ; i++){
+        for (i = 0; i < menor->tamanho; i++) {
+        int diferenca = maior->digitos[i] - menor->digitos[i] - carry;
 
-        if(maior->digitos[i] >= menor->digitos[i]){
-            maior->digitos[i] -= menor->digitos[i] + carry;
+        if (diferenca < 0) {
+            diferenca += 1000000000; // 10^9, pois cada posição contém 9 dígitos
+
+            carry = 1;
+        } else {
             carry = 0;
-        }else{
-            //int numero = maior->digitos[i];
+        }
 
-            int dig_vetor = sizeof(maior->digitos[i] / sizeof(int));
-
-            //printf(" %d numero de digitos no vetor %d\n ", dig_vetor, i);
-            
-            maior->digitos[i] = maior->digitos[i] *(int)ceil(pow(10, dig_vetor)) - menor->digitos[i];
-             
-            carry = -1;
-        } 
-
-    // while ( maior->digitos[maior->tamanho -1] == 0){ //serve para retirar digitos que só tem zeros
-    //     maior->tamanho--;
-    // }
-
+        maior->digitos[i] = diferenca;
     }
+
+    // Tratar carry restante, se houver
+    for (i = menor->tamanho; i < maior->tamanho && carry; i++) {
+        if (maior->digitos[i] >= carry) {
+            maior->digitos[i] -= carry;
+            carry = 0;
+        } else {
+            maior->digitos[i] += 1000000000 - carry; // 10^9
+
+            carry = 1;
+        }
+    }
+
+    while ( maior->digitos[maior->tamanho -1] == 0){ //serve para retirar digitos que só tem zeros
+        maior->tamanho--;
+    }
+
+    
 
     if(sinal == '-')
         maior->sinal = '-';
