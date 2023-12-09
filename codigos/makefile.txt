@@ -1,0 +1,8 @@
+all: bignumber.o
+	gcc -std=c99 -Wall -Werror bignumber.o cliente.c -o trab
+
+bignumber.o: bignumber.h
+	gcc -c bignumber.c
+
+clean: 
+	rm -rf *.o

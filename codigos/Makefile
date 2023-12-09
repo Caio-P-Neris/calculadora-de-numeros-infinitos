@@ -1,10 +1,14 @@
+CC = gcc
+CFLAGS = -std=c99 -Wall -Werror -g -D_GNU_SOURCE
+LDFLAGS = -lm
+
 all: cliente
 
 cliente: cliente.o bignumber.o
-	gcc cliente.o bignumber.o -lm -o cliente
+	$(CC) $(CFLAGS) -o cliente cliente.o bignumber.o $(LDFLAGS)
 
-cliente.o: cliente.c bignumber.h
-	gcc -std=c99 -Wall -Werror -c cliente.c
+%.o: %.c bignumber.h
+	$(CC) $(CFLAGS) -c $< -o $@
 
-bignumber.o: bignumber.c bignumber.h 
-	gcc -std=c99 -Wall -Werror -c bignumber.c
+clean:
+	rm -f cliente *.o

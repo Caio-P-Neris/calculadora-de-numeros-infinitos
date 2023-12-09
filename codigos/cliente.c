@@ -1,3 +1,4 @@
+//#define _GNU_SOURCE
 #include <stdio.h>
 #include "bignumber.h"
 #include <string.h>
@@ -105,7 +106,7 @@ int main(){
 
     case '*':
     
-    BigNumber resultado;
+    //BigNumber resultado;
 
     // if (a.tamanho > b.tamanho)
     //     resultado.tamanho = 2*a.tamanho;
@@ -116,10 +117,10 @@ int main(){
 
     //resultado.digitos = (long long int*)calloc(resultado.tamanho, sizeof(long long int));
 
-    if (a.sinal == a.sinal)
-        resultado.sinal = '+';
-    else
-        resultado.sinal = '-';
+    // if (a.sinal == a.sinal)
+    //     resultado.sinal = '+';
+    // else
+    //     resultado.sinal = '-';
 
     // if(a.tamanho > b.tamanho || (a.tamanho == b.tamanho && (a.digitos[a.tamanho -1] > b.digitos[b.tamanho -1])))
     //     (multiplicacao_karatsuba(&a,&b, &resultado));

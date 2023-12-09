@@ -1,3 +1,4 @@
+//#define _GNU_SOURCE
 #include <stdio.h>
 #include <math.h>
 #include "bignumber.h"
@@ -160,7 +161,7 @@ void imprime_certo(BigNumber num) {
         if (num.digitos[i] != 0)
             printf("%09lld", num.digitos[i]); // Imprime cada bloco de 9 dígitos com zeros à esquerda
         else
-            printf(0);
+            printf("%d\n", 0);
     }
 
     printf("\n");
@@ -261,7 +262,7 @@ BigNumber subtracao(BigNumber *maior, BigNumber *menor, char sinal){
             maior->digitos[i] -= menor->digitos[i] + carry;
             carry = 0;
         }else{
-            int numero = maior->digitos[i];
+            //int numero = maior->digitos[i];
 
             int dig_vetor = sizeof(maior->digitos[i] / sizeof(int));
 
