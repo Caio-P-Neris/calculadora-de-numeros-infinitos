@@ -1,5 +1,5 @@
 CC = gcc
-CFLAGS = -std=c99 -Wall -Werror -g -D_GNU_SOURCE
+CFLAGS = -std=c99 -Wall -Wextra -Wvla -g -D_GNU_SOURCE
 LDFLAGS = -lm
 
 all: cliente
