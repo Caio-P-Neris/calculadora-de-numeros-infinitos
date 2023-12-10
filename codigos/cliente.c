@@ -10,23 +10,16 @@ int main(){
     int controle = 0;
     
     while(controle != 1 ){
-    //BigNumber a = le_numerao(a);
-
-    // imprime_numerao(a);
 
     BigNumber a = le_converte(a);
 
     //printf("%d", a.digitos[0]);
 
-    if (a.digitos == NULL)
+    if (a.digitos == NULL){
+        free(a.digitos);
         break;
+    }
 
-    
-    //BigNumber a_conv = converte(a);
-
-    //imprime_certo(a);
-
-    //getchar();
 
     BigNumber b = le_converte(b);
 
@@ -38,14 +31,6 @@ int main(){
 
     //printf("%c \n", operador);
 
-    // int comparacao = compara(&a, &b);
-
-    // if(    ((comparacao == 1) && (a.sinal == '+' && b.sinal == '+' && operador =='-' )) // 1 1 -
-    //     || ((comparacao == 1) && (a.sinal == '+' && b.sinal == '-' && operador =='+' )) // 1 -1 +
-    //     || ((comparacao == 1) && (a.sinal == '-' && b.sinal == '+' && operador =='+' )) // -1 1 +
-    //     || ((comparacao == 1) && (a.sinal == '-' && b.sinal == '-' && operador =='-' )) ){ // -1 -1 -
-    //     printf("0\n");
-    //     operador = '=';
 
      if (a.sinal == b.sinal && operador == '+'){
         operador = '+';
@@ -79,13 +64,11 @@ int main(){
     switch (operador)
      {
      case '+' :
-        //if (a.sinal == b.sinal){
+
             if( a.tamanho > b.tamanho )
                 imprime_certo(somac(&a,&b));
             else
                 imprime_certo(somac(&b,&a));
-        // } else if( (a.sinal == '+' && b.sinal =='-') || (a.sinal == '-' && b.sinal == '+') )
-        //         operador = '-';
         break;
 
     case '-':
@@ -126,41 +109,13 @@ int main(){
 
 
     case '*':
+
+    BigNumber resultado = muliplica_normal(&a, &b);
+
+    imprime_certo(resultado);
+
+    free(resultado.digitos);
     
-    //BigNumber resultado;
-
-    // if (a.tamanho > b.tamanho)
-    //     resultado.tamanho = 2*a.tamanho;
-    // else 
-    //     resultado.tamanho = 2*b.tamanho;
-
-    //resultado.tamanho = a.tamanho + b.tamanho; 
-
-    //resultado.digitos = (long long int*)calloc(resultado.tamanho, sizeof(long long int));
-
-    // if (a.sinal == a.sinal)
-    //     resultado.sinal = '+';
-    // else
-    //     resultado.sinal = '-';
-
-    // if(a.tamanho > b.tamanho || (a.tamanho == b.tamanho && (a.digitos[a.tamanho -1] > b.digitos[b.tamanho -1])))
-    //     (multiplicacao_karatsuba(&a,&b, &resultado));
-    // else
-    //(multiplicacao_karatsuba(&a,&b, &resultado));
-    
-    // resultado = multiplicacao_karatsuba(&a, &b);
-
-    // if (a.sinal == b.sinal)
-    //     resultado.sinal = '+';
-    // else
-    //     resultado.sinal = '-';
-    
-    //imprime_certo(resultado);
-
-
-    //free(resultado.digitos);
-
-    imprime_certo(muliplica_normal(&a, &b));
         break;
     
     default:
