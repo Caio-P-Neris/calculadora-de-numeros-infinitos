@@ -1,5 +1,7 @@
 # trabalho_pe
 
+Ideia do trabalho: fazer uma calculadora de alta precisão para números tão grandes quanto o usuário quiser, sendo limitado em teoria apenas pela memória do computador que está rodando (em C).
+
 Instruções para rodar: dentro da pasta codigos -> make // para executar -> ./cliente // usei redirecionamento de entrada
 
 Feito individualmente por: Caio Pereria Neris, RA: 11202230288. Professor Maycon Sambinelli (programação estruturada)

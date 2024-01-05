@@ -1,0 +1,25 @@
+Para redirecionar um arquivo de entrada e colocar o texto de saida para utilizar as instancias prontas, basta fazer: 
+
+estando na pasta codigos, tendo dado o make, exemplo:
+
+./cliente < ../mais_casos/00_add_pos_small.in > ../out_mais_casos/meu_00_add_pos_small.out
+
+para comparar o arquivo gerado com o gabarito esperado, basta usar: 
+
+diff ../mais_casos/00_add_pos_small.out ../out_mais_casos/meu_00_add_pos_small.out
+
+se nada aparecer, significa que os arquivos são iguais. Se aparecer algo, ele indica onde e qual a diferença
+
+problema: 
+./cliente < ../mais_casos/02_sub_pos_small.in > ../out_mais_casos/meu_02_sub_pos_small.out
+diff ../mais_casos/02_sub_pos_small.out ../out_mais_casos/meu_02_sub_pos_small.out
+
+5654581084
+5602295482
+-
+tá dando -999999999947714398 era pra ser 52285602
+
+97147189847
+97139667123
+-
+-999999999992477276 era pra ser 7522724
